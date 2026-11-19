@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cartulinas - Bingo Virtual</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="generator.css">
+</head>
+<body class="gen">
+<header class="top">
+  <div class="brand">
+    <div class="logo-slot" id="logoSlot" title="Clic para subir tu logo">B</div>
+    <div>
+      <div class="club">GENERADOR DE CARTULINAS</div>
+      <h1>BINGO VIRTUAL</h1>
+    </div>
+  </div>
+  <nav class="top-actions">
+    <div id="roundPick"></div>
+    <a class="btn ghost" href="#registro">📋 Registro</a>
+    <a class="btn gold" href="index.html" target="_blank">🎱 Ir a la sala de juego</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-text">
+    <h2>Crea las cartulinas<br>de tu venta</h2>
+    <p>Cada cartulina es única, lleva su número y queda registrada con el nombre del comprador y del socio que la vendió.</p>
+    <ol class="steps">
+      <li><b>1</b><span>Escribe los datos</span></li>
+      <li><b>2</b><span>Genera</span></li>
+      <li><b>3</b><span>Descarga y envía</span></li>
+    </ol>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="big" id="stTotal">0</div><div>Cartulinas</div></div>
+    <div class="stat"><div class="big" id="stSellers">0</div><div>Socios vendedores</div></div>
+    <div class="stat"><div class="big" id="stBuyers">0</div><div>Compradores</div></div>
+  </div>
+</section>
+
+<div class="wrap">
+  <section class="maker">
+    <form id="form" class="formcard" autocomplete="off">
+      <h2>🎟️ Nueva venta</h2>
+
+      <label class="field">
+        <span class="ico">🤝</span>
+        <span class="fl">Socio vendedor</span>
+        <input type="text" id="seller" list="sellers" required placeholder="¿Quién vende?">
+      </label>
+      <label class="field">
+        <span class="ico">🙋</span>
+        <span class="fl">Comprador</span>
+        <input type="text" id="buyer" list="buyers" required placeholder="¿Quién compra?">
+      </label>
+
+      <div class="qtyrow">
+        <div class="fl">Cantidad de cartulinas</div>
+        <div class="qty">
+          <button type="button" class="qb" id="qMinus">−</button>
+          <input type="number" id="qty" min="1" max="100" value="1" required>
+          <button type="button" class="qb" id="qPlus">+</button>
+        </div>
+      </div>
+
+      <div class="fmtrow">
+        <div class="fl">Formato de descarga</div>
+        <div class="seg" id="fmtSeg">
+          <button type="button" class="on" data-f="png">PNG</button>
+          <button type="button" data-f="jpg">JPG</button>
+        </div>
+        <select id="fmt" hidden><option value="png">PNG</option><option value="jpg">JPG</option></select>
+      </div>
+
+      <button class="btn-big" type="submit">✨ Generar cartulinas</button>
+    </form>
+
+    <div class="previewcard">
+      <div class="pv-title">Así se verá tu cartulina</div>
+      <div class="pv-stage"><canvas id="pvCanvas"></canvas></div>
+      <div class="pv-note">Los números cambian en cada cartulina. Este es solo un ejemplo.</div>
+    </div>
+  </section>
+
+  <section class="result" id="resultSec" hidden>
+    <div class="result-head">
+      <div>
+        <h2>✅ ¡Listas!</h2>
+        <div id="resultMsg" class="muted"></div>
+      </div>
+      <div class="rbtns">
+        <button class="btn gold" id="zipBatch">⬇ Descargar todas (ZIP)</button>
+      </div>
+    </div>
+    <div class="tiles" id="batch"></div>
+  </section>
+
+  <section class="panel" id="registro">
+    <h2>📋 Registro de cartulinas · <span id="roundLabel"></span></h2>
+    <div class="rank" id="rank"></div>
+    <div class="toolbar">
+      <input type="search" id="search" placeholder="🔍 Buscar por número, comprador o vendedor">
+      <button class="btn ghost small" id="zipAll">⬇ ZIP de lo filtrado</button>
+      <button class="btn ghost small" id="csv">Exportar CSV</button>
+      <button class="btn ghost small" id="backup">💾 Respaldo</button>
+      <button class="btn ghost small" id="restore">Restaurar</button>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Nº</th><th>Comprador</th><th>Vendedor</th><th>Fecha</th><th></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="emptyMsg" hidden>Aún no hay cartulinas. ¡Genera la primera arriba! 🎉</div>
+    </div>
+  </section>
+
+  <section class="panel" id="copias">
+    <h2>🛟 Copias de seguridad automáticas</h2>
+    <p class="muted" style="margin:0 0 12px">Cada vez que generas, restauras o eliminas cartulinas se guarda una copia sola (dentro del navegador y, si abriste con <b>Iniciar Bingo.bat</b>, también como archivo en la carpeta <b>copias</b>). Restaurar una copia no borra nada: antes guarda el estado actual.</p>
+    <div class="toolbar"><button class="btn ghost small" id="diskRestore">📁 Restaurar desde la carpeta "copias"</button></div>
+    <div class="blist" id="blist"></div>
+  </section>
+</div>
+
+<datalist id="sellers"></datalist><datalist id="buyers"></datalist>
+
+<div class="overlay" id="viewOverlay">
+  <div class="modal">
+    <div class="verify-body" style="margin-top:0">
+      <canvas id="viewCanvas"></canvas>
+      <div class="vinfo">
+        <h3 id="viewTitle" style="font-size:28px"></h3>
+        <div class="row2">
+          <button class="btn gold" id="viewDl">⬇ Descargar</button>
+          <button class="btn ghost" id="viewClose">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script src="generator.js"></script>
+</body>
+</html>

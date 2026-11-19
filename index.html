@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bingo Virtual</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <div class="logo-slot" id="logoSlot" title="Clic para subir tu logo">B</div>
+    <div>
+      <div class="club">SALA DE JUEGO</div>
+      <h1>BINGO VIRTUAL</h1>
+    </div>
+  </div>
+  <nav class="top-actions">
+    <div id="roundPick"></div>
+    <button class="btn ghost" id="btnVerify">🔍 Verificar cartulina</button>
+    <a class="btn ghost" href="cartulinas.html" target="_blank">🎟️ Generar cartulinas</a>
+    <button class="btn ghost" id="btnSound">🔊 Voz: sí</button>
+    <button class="btn danger" id="btnNew">↺ Reiniciar todo</button>
+  </nav>
+</header>
+
+<section class="games" id="games"></section>
+
+<main class="stage">
+  <aside class="left">
+    <div class="ball-wrap">
+      <div class="ball empty" id="ball"><div class="inner"><div class="l" id="bl">?</div><div class="n" id="bn">--</div></div></div>
+      <div class="counter" id="counter">Balotas: 0 / 75</div>
+      <div class="cardcount" id="cardCount"></div>
+      <div class="last" id="last"></div>
+    </div>
+    <div class="controls">
+      <button class="btn btn-draw" id="btnDraw">🎱 SACAR BALOTA</button>
+      <div class="row2">
+        <button class="btn ghost" id="btnAuto">▶ Automático</button>
+        <select id="interval" title="Segundos entre balotas">
+          <option value="1">⚡ rápido (prueba)</option><option value="5">cada 5 s</option><option value="8">cada 8 s</option>
+          <option value="10">cada 10 s</option><option value="15">cada 15 s</option>
+        </select>
+      </div>
+      <button class="btn ghost" id="btnUndo">⟲ Deshacer última balota</button>
+      <button class="btn gold" id="btnResetBalls">🔄 Reiniciar todas las balotas</button>
+      <button class="btn gold" id="btnResetWins">🏆 Reiniciar ganadores de este juego</button>
+      <div style="text-align:center" class="muted">Tecla <b>Espacio</b> = sacar balota</div>
+    </div>
+    <div class="card-box">
+      <div class="gname"><h3 id="gTitle">Letra B</h3><span id="gSub"></span></div>
+      <div class="pattern" id="pattern"></div>
+      <button class="btn ghost small" id="btnShowShape" style="width:100%;justify-content:center;margin-bottom:6px">👁 Ver figura en grande</button>
+      <label class="lab" for="prize">PREMIO DE ESTE JUEGO</label>
+      <input type="text" id="prize" placeholder="Ej: Bono de $100.000">
+    </div>
+  </aside>
+  <section class="board" id="board"></section>
+</main>
+
+<section class="history">
+  <h3>🏆 Ganadores de la jornada</h3>
+  <div class="hlist" id="hlist"></div>
+</section>
+
+<!-- Ganadores -->
+<div class="overlay" id="winOverlay">
+  <canvas id="confetti"></canvas>
+  <div class="modal">
+    <h2>¡BINGO!</h2>
+    <div class="gsub" id="winGame"></div>
+    <div class="winners" id="winList"></div>
+    <div class="btns">
+      <button class="btn gold" id="btnNextReset">Siguiente juego con balotas nuevas ➜</button>
+      <button class="btn ghost" id="btnNext">Siguiente juego (conservar balotas)</button>
+      <button class="btn ghost" id="btnStay">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Figura del juego -->
+<div class="overlay" id="gameOverlay">
+  <div class="modal gpmodal">
+    <button class="xbtn" id="gpClose" title="Cerrar">✕</button>
+    <div class="gpkicker">NUEVO JUEGO</div>
+    <h2 id="gpTitle"></h2>
+    <div class="gsub" id="gpPrize"></div>
+    <div class="bigpattern" id="gpGrid"></div>
+    <div class="muted" style="margin-top:14px">Hay que completar las casillas de colores para cantar BINGO</div>
+  </div>
+</div>
+
+<!-- Verificar -->
+<div class="overlay" id="verOverlay">
+  <div class="modal">
+    <h2 style="font-size:38px">Verificar cartulina</h2>
+    <div class="row2" style="margin-top:12px">
+      <input type="number" id="verNum" min="1" placeholder="Número de cartulina">
+      <button class="btn gold" id="verGo" style="flex:none">Buscar</button>
+      <button class="btn ghost" id="verClose" style="flex:none">Cerrar</button>
+    </div>
+    <div id="verRes"></div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script src="host.js"></script>
+</body>
+</html>
